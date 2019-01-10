@@ -1,0 +1,48 @@
+Using IIFEs in JavaScript to control variable scope
+Because creating too many global variables is iffy
+On a recent project, a few of us have been chal­lenged to take our JavaScript skills to a new level. We’ve even learned a few new tricks from a group of out­side devel­op­ers that we’re work­ing with who spe­cial­ize in JavaScript.
+One such trick is using immediately-invoked func­tion expres­sions (IIFEs), which are often used to take advan­tage of JavaScript’s scope rules to fun­nel in cer­tain global vari­ables and avoid cre­at­ing too many of your own globals.
+The basic con­cept of an IIFE (lov­ingly pro­nounced “iffy,” occa­sion­ally referred to as a self-executing or self-invoked anony­mous func­tion) is to wrap a por­tion of JavaScript in an anony­mous func­tion that gets called immediately:
+
+     (function () {
+     // your code here
+     })();
+
+Wrapping the func­tion in paren­the­ses turns it into an expres­sion rather than a dec­la­ra­tion. The empty set of paren­the­ses that fol­lows tells the inter­preter to run that expres­sion as a func­tion. It is a more com­pact and anony­mous equiv­a­lent to the following:
+var foo = (function () {
+     // your code here
+});
+foo();
+Take con­trol of your globals
+Writing code like this might seem redun­dant until you give it more sub­stance, of course. Let’s use an exam­ple I recently came across in a web­site I was work­ing on at home.
+This web­site, unfor­tu­nately, has depen­den­cies on both the jQuery and Prototype libraries. Both libraries use $ as a global vari­able; Prototype as a short­ened way to access document.getElementById(), and jQuery for, well, pretty much every­thing it does. Because of this, the value of $ changes depend­ing on which library is included last. In this case, Prototype was the last-included library, so $ belongs to Prototype.
+Now if I want to use jQuery’s func­tions, instead of using $( ... ), I have to use jQuery( ... ). This is a lit­tle annoy­ing, what with jQuery being the more widely-used library that more devel­op­ers are famil­iar with. To fix this, I wrapped my code in an IIFE and passed it the jQuery global variable:
+(function ($) {
+     $(document).ready(function () {
+          // my code
+      });
+})(jQuery);
+This means that, no mat­ter what the global vari­able $ means out­side my IIFE, within it I’m explic­itly telling it to run jQuery func­tions. I could just as eas­ily assign jQuery to any other unused vari­able and it would have the same effect:
+(function (p) {
+     p(document).ready(function () {
+          // my code
+     });
+})(jQuery);
+Keep your vari­ables to yourself
+Aside from fun­nel­ing in global vari­ables to what­ever val­ues I want, I can also use IIFEs to pre­vent vari­ables from being added to the global scope.
+For exam­ple, you might run the fol­low­ing code on a web page out­side of any function:
+var x = "hello";
+alert(x); // alert dialog with the text "hello"
+By doing this, x is now a global vari­able. If x was assigned else­where before this script was called, it’s now reas­signed to the value "hello". Not always ideal. To avoid this with­out hav­ing to name and call a new func­tion, wrap your code in an IIFE. This keeps your vari­ables within a smaller scope and still runs the lines immediately:
+(function() {
+     var x = "hello";
+     alert(x); // alert dialog with the text "hello"
+})();
+Now, x is only assigned to the value "hello" for the dura­tion of the IIFE. If x was assigned glob­ally before the IIFE, it would keep that value after the IIFE runs:
+var x = "foo";
+(function() {
+     var x = "hello";
+     alert(x); // alert dialog with the text "hello"
+})();
+alert(x); // alert dialog with the text "foo"
+As you’ve seen, the IIFE con­ven­tion can be a great stan­dard prac­tice when writ­ing your own libraries and plu­g­ins, when extend­ing JavaScript where you may not be aware of every con­text in which cer­tain vari­able names are used and to pre­vent too much data from creep­ing its way into the global scope

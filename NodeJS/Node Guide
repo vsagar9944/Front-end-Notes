@@ -1,0 +1,62 @@
+Typescript Guide
+    1. https://basarat.gitbooks.io/typescript/
+    2. https://github.com/Microsoft/TypeScript-Node-Starter/tree/master/src
+    3. https://github.com/DefinitelyTyped/DefinitelyTyped
+
+    http://2ality.com/2018/04/type-notation-typescript.html
+
+Node JS
+    1. Node Basic in Typescript
+        package.json
+        npm install --save-dev typescript tslint
+        tsconfig.json
+        tslint.json
+        import module instead of require
+        Getting the right types
+            npm install --save-dev @types/node @types/express
+    2. Express
+        1. View Engine
+        2. express-session
+        3. Static files serving
+    3. Loggers in NodeJS  (https://www.loggly.com/blog/node-js-libraries-make-sophisticated-logging-simpler/)
+        1. Custom Wrapper for Loggers, so that we can change logging api when needed
+        2. Use logger package
+
+        Logger Packages
+            1. winston    -->  winston,winston-express and winston-papertrail 
+            2. log4js
+            3. npmlog
+            4. Bunyan
+    4. Materialize and EJS
+    5. Assets Build Script for Typescript
+        npm install --save-dev ts-node shelljs fs-extra nodemon rimraf npm-run-all
+        npm install --save-dev @types/fs-extra @types/shelljs
+        "scripts": {
+            "clean": "rimraf dist/*",
+            "copy-assets": "ts-node tools/copyAssets",
+        }
+    6. Create Scripts in packge.json for each task
+    7. Configuration Management
+        npm install dotenv
+        npm install --save-dev @types/dotenv
+        Create .env file
+            # Set to production when deploying to production
+            NODE_ENV=development
+
+            # Node.js server configuration
+            SERVER_PORT=8080
+        Reading configuration
+            process.env.SERVER_PORT
+    8. Refactor Routes
+    9. Database
+        1. PostgreSQL database
+            Add database build Script
+    10. src/public
+        exclude this folder from the backend Node.js build process.
+        Create a new tsconfig.json file under src/public/js
+    11. Third Party Authentication
+        1. Google
+        2. Facebook
+        3. Twitter
+        4. Github
+    12. 
