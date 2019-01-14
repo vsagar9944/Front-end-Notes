@@ -45,7 +45,7 @@ Default applications are created in a directory of the same name, with an initia
 
 Options
 
-​	--routing		: Generates a routing module
+​	--routing		: To Generates a routing module
 
 ​	--prefix		:The prefix to apply to generated selectors.
 
